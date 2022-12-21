@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ichat_app/models/messagechatmodel.dart';
+import 'package:ichat_app/screens/camerascreen.dart';
 import 'package:ichat_app/screens/loginscreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -57,7 +58,7 @@ class _ChatPageState extends State<ChatPage> {
     chatProvider = context.read<ChatProvider>();
     authProvider = context.read<AuthProvider>();
 
-   // focusNode.addListener(onFocusChange);
+    // focusNode.addListener(onFocusChange);
     listScrollController.addListener(_scrollListener);
     readLocal();
   }
@@ -94,13 +95,27 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Future getImage() async {
-    ImagePicker imagePicker = ImagePicker();
-    PickedFile? pickedFile;
+  Future getImageFromGallery() async {
+    Navigator.pop(context);
+    XFile? pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      imageFile = File(pickedImage.path);
+      if (imageFile != null) {
+        setState(() {
+          isLoading = true;
+        });
+        uploadFile();
+      }
+    }
+  }
 
-    pickedFile = await imagePicker.getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      imageFile = File(pickedFile.path);
+  Future getImageFromCamera() async {
+    Navigator.pop(context);
+    XFile? pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedImage != null) {
+      imageFile = File(pickedImage.path);
       if (imageFile != null) {
         setState(() {
           isLoading = true;
@@ -251,24 +266,24 @@ class _ChatPageState extends State<ChatPage> {
           alignment: Alignment.centerLeft,
           child: messageChatModel.type == TypeMessage.text
               ? Container(
-            padding: EdgeInsets.all(10),
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(10)),
-            width: MediaQuery.of(context).size.width - 150,
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10)),
+                  width: MediaQuery.of(context).size.width - 150,
                   child: Text(
                     messageChatModel.content,
                     style: TextStyle(color: Colors.white),
                   ),
                 )
               : Container(
-            padding: EdgeInsets.all(5),
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(10)),
-            width: MediaQuery.of(context).size.width - 150,
+                  padding: EdgeInsets.all(5),
+                  margin: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10)),
+                  width: MediaQuery.of(context).size.width - 150,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
@@ -298,8 +313,34 @@ class _ChatPageState extends State<ChatPage> {
           Container(
             margin: EdgeInsets.symmetric(horizontal: 1),
             child: IconButton(
-              icon: Icon(Icons.image),
-              onPressed: getImage,
+              icon: const Icon(Icons.image),
+              // onPressed: (){
+              //    Navigator.push(context, MaterialPageRoute(builder: (builder)=>CameraScreen()));
+              // },
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (builder) => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextButton(
+                        onPressed: getImageFromCamera,
+                        child: const Text(
+                          'Camera',
+                          style: TextStyle(color: ColorConstants.primaryColor),
+                        ),
+                      ),
+                      const Divider(thickness: 1),
+                      TextButton(
+                        onPressed: getImageFromGallery,
+                        child: const Text('Gallery',
+                            style:
+                                TextStyle(color: ColorConstants.primaryColor)),
+                      ),
+                    ],
+                  ),
+                );
+              },
               color: ColorConstants.primaryColor,
             ),
           ),

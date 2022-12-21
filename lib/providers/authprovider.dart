@@ -76,6 +76,7 @@ class AuthProvider extends ChangeNotifier {
             FirestoreConstants.id: firebaseUser.uid,
             "createdAt": DateTime.now().millisecondsSinceEpoch.toString(),
             FirestoreConstants.chattingWith: null,
+            FirestoreConstants.aboutMe: firebaseUser.email
           });
 
           User? currentUser = firebaseUser;
@@ -83,13 +84,15 @@ class AuthProvider extends ChangeNotifier {
           await prefs.setString(FirestoreConstants.nickname, currentUser.displayName??'');
           await prefs.setString(FirestoreConstants.photoUrl, currentUser.photoURL??'');
           await prefs.setString(FirestoreConstants.phoneNumber, currentUser.phoneNumber??'');
+          await prefs.setString(FirestoreConstants.aboutMe, currentUser.email??'');
         }else{
           DocumentSnapshot documentSnapshot = document[0];
           UserChatModel userChat = UserChatModel.fromDocument(documentSnapshot);
           await prefs.setString(FirestoreConstants.id, userChat.id);
-          await prefs.setString(FirestoreConstants.nickname, userChat.nickName??'');
-          await prefs.setString(FirestoreConstants.photoUrl, userChat.photoUrl??'');
-          await prefs.setString(FirestoreConstants.phoneNumber, userChat.phoneNumber??'');
+          await prefs.setString(FirestoreConstants.nickname, userChat.nickName);
+          await prefs.setString(FirestoreConstants.photoUrl, userChat.photoUrl);
+          await prefs.setString(FirestoreConstants.phoneNumber, userChat.phoneNumber);
+          await prefs.setString(FirestoreConstants.aboutMe, userChat.aboutMe);
         }
         _status = Status.authenticated;
         notifyListeners();

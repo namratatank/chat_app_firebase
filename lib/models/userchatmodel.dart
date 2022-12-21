@@ -22,6 +22,7 @@ class UserChatModel {
       FirestoreConstants.id: id,
       FirestoreConstants.photoUrl: photoUrl,
       FirestoreConstants.nickname: nickName,
+      FirestoreConstants.aboutMe:aboutMe,
       FirestoreConstants.phoneNumber: phoneNumber,
     };
   }

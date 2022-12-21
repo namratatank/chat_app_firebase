@@ -341,7 +341,19 @@ class _HomePageState extends State<HomePage> {
               userChat.aboutMe,
               style: TextStyle(color: isWhite ? Colors.black : Colors.white),
             ),
-
+            trailing: Container(
+              height: 18,
+              width: 18,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.red,
+              ),
+              child: const Center(
+                  child: Text(
+                '1',
+                style: TextStyle(color: Colors.white, fontSize: 12),
+              )),
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -366,7 +378,7 @@ class _HomePageState extends State<HomePage> {
     //Get Current installed version of app
     final PackageInfo info = await PackageInfo.fromPlatform();
     int currentVersion = int.parse(info.version.characters.first);
-       // int.parse(info.version.trim().replaceAll(".0", ""));
+    // int.parse(info.version.trim().replaceAll(".0", ""));
 
     //Get Latest version info from firebase config
     final remoteConfig = FirebaseRemoteConfig.instance;
@@ -389,10 +401,9 @@ class _HomePageState extends State<HomePage> {
       if (latestVersion > currentVersion) {
         setState(() {});
         _showUpdateVersionDialog(context);
-        if(minimumVersion>currentVersion){
+        if (minimumVersion > currentVersion) {
           _showForceUpdateVersionDialog(context);
         }
-
       }
     } on PlatformException catch (exception) {
       // Fetch throttled.
