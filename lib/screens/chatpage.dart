@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -95,6 +96,12 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  void _pickFile() async {
+    Navigator.pop(context);
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    if (result == null) return;
+  }
+
   Future getImageFromGallery() async {
     Navigator.pop(context);
     XFile? pickedImage =
@@ -105,7 +112,7 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           isLoading = true;
         });
-        uploadFile();
+        uploadImageFile();
       }
     }
   }
@@ -120,12 +127,12 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           isLoading = true;
         });
-        uploadFile();
+        uploadImageFile();
       }
     }
   }
 
-  Future uploadFile() async {
+  Future uploadImageFile() async {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
     UploadTask uploadTask = chatProvider.uploadFile(imageFile!, fileName);
     try {
@@ -199,7 +206,7 @@ class _ChatPageState extends State<ChatPage> {
               stream: chatProvider.getChatStream(groupChatId, _limit),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasData) {
+                 if (snapshot.hasData) {
                   listMessage = snapshot.data!.docs;
                   if (listMessage.isNotEmpty) {
                     return ListView.builder(
@@ -257,7 +264,10 @@ class _ChatPageState extends State<ChatPage> {
                   width: MediaQuery.of(context).size.width - 150,
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(messageChatModel.content)),
+                      child: Image.network(
+                        messageChatModel.content,
+                        fit: BoxFit.cover,
+                      )),
                 ),
         );
       } else {
@@ -288,6 +298,7 @@ class _ChatPageState extends State<ChatPage> {
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
                       messageChatModel.content,
+                      fit: BoxFit.cover,
                       width: 200,
                     ),
                   ),
@@ -355,9 +366,23 @@ class _ChatPageState extends State<ChatPage> {
                 style: const TextStyle(
                     color: ColorConstants.primaryColor, fontSize: 15),
                 controller: textEditingController,
-                decoration: const InputDecoration.collapsed(
+                decoration: InputDecoration(
                   hintText: 'Type your message...',
                   hintStyle: TextStyle(color: ColorConstants.greyColor),
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          focusNode.unfocus();
+                          focusNode.canRequestFocus = false;
+                        });
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) => bottomSheet());
+                      },
+                      icon: const Icon(
+                        Icons.attach_file_rounded,
+                        color: ColorConstants.primaryColor,
+                      )),
                 ),
                 focusNode: focusNode,
               ),
@@ -376,6 +401,78 @@ class _ChatPageState extends State<ChatPage> {
                 color: ColorConstants.primaryColor,
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bottomSheet() {
+    return Container(
+      height: 270,
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        margin: EdgeInsets.all(10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildAttachIcon(
+                    Icons.insert_drive_file, Colors.indigo, 'Document', () {
+                  _pickFile();
+                }),
+                buildAttachIcon(Icons.camera_alt, Colors.pink, 'Camera', () {
+                  getImageFromCamera();
+                }),
+                buildAttachIcon(Icons.photo, Colors.purple, 'Gallery', () {
+                  getImageFromGallery();
+                }),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildAttachIcon(Icons.headset, Colors.orange, 'Audio', () {
+                  _pickFile();
+                }),
+                buildAttachIcon(
+                    Icons.location_pin, Colors.pinkAccent, 'Location', () {
+                  Navigator.pop(context);
+                }),
+                buildAttachIcon(Icons.person, Colors.blue, 'Contact', () {
+                  Navigator.pop(context);
+                }),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  buildAttachIcon(
+      IconData icon, Color color, String text, void Function() onTap) {
+    return InkWell(
+      onTap: () {
+        onTap();
+      },
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
+            child: CircleAvatar(
+              radius: 27,
+              backgroundColor: color,
+              child: Icon(icon, color: Colors.white),
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            text,
+            style: TextStyle(fontSize: 12),
           ),
         ],
       ),
