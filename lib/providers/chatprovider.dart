@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -48,6 +49,29 @@ class ChatProvider {
     MessageChatModel messageChat = MessageChatModel(
       idFrom: currentUserId,
       idTo: peerId,
+      timestamp: DateTime.now().millisecondsSinceEpoch.toString(),
+      content: content,
+      type: type,
+    );
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      transaction.set(
+        documentReference,
+        messageChat.toJson(),
+      );
+    });
+  }
+
+  void sendGroupMessage(String content, int type, String groupChatId, String currentUserId, List<String> peerId) {
+    DocumentReference documentReference = firebaseFirestore
+        .collection(FirestoreConstants.pathMessageCollection)
+        .doc(groupChatId)
+        .collection(groupChatId)
+        .doc(DateTime.now().millisecondsSinceEpoch.toString());
+
+    MessageChatModel messageChat = MessageChatModel(
+      idFrom: currentUserId,
+      idTo: jsonEncode(peerId),
       timestamp: DateTime.now().millisecondsSinceEpoch.toString(),
       content: content,
       type: type,

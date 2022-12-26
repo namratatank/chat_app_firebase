@@ -5,10 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ichat_app/models/messagechatmodel.dart';
-import 'package:ichat_app/screens/camerascreen.dart';
 import 'package:ichat_app/screens/loginscreen.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/color_constants.dart';
@@ -20,12 +18,14 @@ class ChatPage extends StatefulWidget {
   final String peerId;
   final String peerAvatar;
   final String peerNickname;
+  final bool isFromGroup;
 
   const ChatPage(
       {Key? key,
       required this.peerId,
       required this.peerAvatar,
-      required this.peerNickname})
+      required this.peerNickname,
+      required this.isFromGroup})
       : super(key: key);
 
   @override
@@ -81,7 +81,15 @@ class _ChatPageState extends State<ChatPage> {
         (Route<dynamic> route) => false,
       );
     }
+
     String peerId = widget.peerId;
+    if (widget.isFromGroup) {
+      widget.peerId
+          .replaceAll("\",\"", "-")
+          .replaceAll("[\"", "")
+          .replaceAll("\"]", "");
+    }
+
     if (currentUserId.compareTo(peerId) > 0) {
       groupChatId = '$currentUserId-$peerId';
     } else {

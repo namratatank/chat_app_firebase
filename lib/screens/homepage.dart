@@ -13,6 +13,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ichat_app/constants/constants.dart';
 import 'package:ichat_app/models/userchatmodel.dart';
 import 'package:ichat_app/providers/authprovider.dart';
+import 'package:ichat_app/screens/creategroup.dart';
 import 'package:ichat_app/screens/loginscreen.dart';
 import 'package:ichat_app/screens/settingpage.dart';
 import 'package:package_info/package_info.dart';
@@ -241,13 +242,29 @@ class _HomePageState extends State<HomePage> {
               if (value == 'Sign out') {
                 handleSignOut();
                 print('SignOut');
-              } else {
+              } else if(value =='Create Group'){
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CreateGroupPage()));
+              }else {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SettingPage()));
               }
             },
             itemBuilder: (BuildContext context) {
               return [
+                PopupMenuItem(
+                  value: 'Create Group',
+                  child: Row(
+                    children: const [
+                      Icon(
+                        Icons.add,
+                        color: Colors.black,
+                      ),
+                      SizedBox(width: 5),
+                      Text('Create Group'),
+                    ],
+                  ),
+                ),
                 PopupMenuItem(
                   value: 'Settings',
                   child: Row(
@@ -281,8 +298,8 @@ class _HomePageState extends State<HomePage> {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('users')
-            .limit(_limit)
+            .collection('users').where('id', isNotEqualTo: context.read<AuthProvider>().getUserFirebaseId())
+            //.limit(_limit)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
@@ -317,9 +334,9 @@ class _HomePageState extends State<HomePage> {
   buildHomeUserItem(BuildContext context, DocumentSnapshot? document) {
     if (document != null) {
       UserChatModel userChat = UserChatModel.fromDocument(document);
-      if (userChat.id == currentUserId) {
-        return SizedBox.shrink();
-      } else {
+      // if (userChat.id == currentUserId) {
+      //   return SizedBox.shrink();
+      // } else {
         return Container(
           child: ListTile(
             leading: userChat.photoUrl.isNotEmpty
@@ -362,13 +379,14 @@ class _HomePageState extends State<HomePage> {
                     peerId: userChat.id,
                     peerAvatar: userChat.photoUrl,
                     peerNickname: userChat.nickName,
+                    isFromGroup: false,
                   ),
                 ),
               );
             },
           ),
         );
-      }
+     // }
     } else {
       return SizedBox.shrink();
     }
