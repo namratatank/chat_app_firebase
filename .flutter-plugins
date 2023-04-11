@@ -1,8 +1,4 @@
 # This is a generated file; do not edit or check into version control.
-camera=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/camera-0.10.0+5/
-camera_android=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/camera_android-0.10.1/
-camera_avfoundation=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/camera_avfoundation-0.9.9/
-camera_web=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/camera_web-0.3.1/
 cloud_firestore=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-4.0.5/
 cloud_firestore_web=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-3.1.0/
 emoji_picker_flutter=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/emoji_picker_flutter-1.5.1/
@@ -24,8 +20,6 @@ google_sign_in=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/google_sign_in
 google_sign_in_android=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-6.1.1/
 google_sign_in_ios=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/google_sign_in_ios-5.5.0/
 google_sign_in_web=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.2/
-image_cropper=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/image_cropper-3.0.1/
-image_cropper_for_web=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/image_cropper_for_web-1.0.3/
 image_picker=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/image_picker-0.8.6/
 image_picker_android=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.5+3/
 image_picker_for_web=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/image_picker_for_web-2.1.10/
@@ -52,7 +46,3 @@ url_launcher_linux=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/url_launch
 url_launcher_macos=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/url_launcher_macos-3.0.1/
 url_launcher_web=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/url_launcher_web-2.0.13/
 url_launcher_windows=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-3.0.1/
-video_player=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/video_player-2.4.10/
-video_player_android=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/video_player_android-2.3.10/
-video_player_avfoundation=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/video_player_avfoundation-2.3.8/
-video_player_web=/Users/indianic/.pub-cache/hosted/pub.dartlang.org/video_player_web-2.0.13/

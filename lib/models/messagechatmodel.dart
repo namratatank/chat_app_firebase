@@ -8,6 +8,7 @@ class MessageChatModel {
   String timestamp;
   String content;
   int type;
+  bool isRead;
 
   MessageChatModel({
     required this.idFrom,
@@ -15,6 +16,7 @@ class MessageChatModel {
     required this.timestamp,
     required this.content,
     required this.type,
+    required this.isRead,
   });
 
   Map<String, dynamic> toJson() {
@@ -24,6 +26,7 @@ class MessageChatModel {
       FirestoreConstants.timestamp: timestamp,
       FirestoreConstants.content: content,
       FirestoreConstants.type: type,
+      FirestoreConstants.isRead: isRead,
     };
   }
 
@@ -33,6 +36,7 @@ class MessageChatModel {
     String timestamp = doc.get(FirestoreConstants.timestamp);
     String content = doc.get(FirestoreConstants.content);
     int type = doc.get(FirestoreConstants.type);
-    return MessageChatModel(idFrom: idFrom, idTo: idTo, timestamp: timestamp, content: content, type: type);
+    bool isRead = doc.get(FirestoreConstants.isRead);
+    return MessageChatModel(idFrom: idFrom, idTo: idTo, timestamp: timestamp, content: content, type: type, isRead: isRead);
   }
 }

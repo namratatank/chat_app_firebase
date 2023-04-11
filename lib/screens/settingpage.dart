@@ -254,6 +254,7 @@ class _SettingPageState extends State<SettingPage> {
         nickName: nickName,
         aboutMe: aboutMe,
         phoneNumber: phoneNumber,
+        isRead: false,
       );
 
       settingProvider
@@ -294,6 +295,7 @@ class _SettingPageState extends State<SettingPage> {
       nickName: nickName,
       aboutMe: aboutMe,
       phoneNumber: phoneNumber,
+      isRead: false,
     );
 
     settingProvider

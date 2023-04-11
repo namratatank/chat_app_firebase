@@ -8,6 +8,7 @@ class UserChatModel {
   String nickName;
   String aboutMe;
   String phoneNumber;
+  bool isRead;
 
   UserChatModel({
     required this.id,
@@ -15,15 +16,17 @@ class UserChatModel {
     required this.nickName,
     required this.aboutMe,
     required this.phoneNumber,
+    required this.isRead,
   });
 
-  Map<String, String> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       FirestoreConstants.id: id,
       FirestoreConstants.photoUrl: photoUrl,
       FirestoreConstants.nickname: nickName,
       FirestoreConstants.aboutMe:aboutMe,
       FirestoreConstants.phoneNumber: phoneNumber,
+      FirestoreConstants.isRead:isRead,
     };
   }
 
@@ -32,6 +35,7 @@ class UserChatModel {
     String nickName = "";
     String aboutMe = "";
     String phoneNumber = "";
+    bool isRead = false;
     try {
       photoUrl = doc.get(FirestoreConstants.photoUrl);
     } catch (e) {}
@@ -44,12 +48,15 @@ class UserChatModel {
     try {
       phoneNumber = doc.get(FirestoreConstants.phoneNumber);
     } catch (e) {}
+    try {
+      isRead = doc.get(FirestoreConstants.isRead);
+    } catch (e) {}
 
     return UserChatModel(
         id: doc.id,
         photoUrl: photoUrl,
         nickName: nickName,
         aboutMe: aboutMe,
-        phoneNumber: phoneNumber);
+        phoneNumber: phoneNumber, isRead: isRead);
   }
 }

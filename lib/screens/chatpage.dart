@@ -6,7 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ichat_app/models/messagechatmodel.dart';
-import 'package:ichat_app/screens/camerascreen.dart';
 import 'package:ichat_app/screens/loginscreen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -154,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
     if (content.trim().isNotEmpty) {
       textEditingController.clear();
       chatProvider.sendMessage(
-          content, type, groupChatId, currentUserId, widget.peerId);
+          content, type, groupChatId, currentUserId, widget.peerId, false);
       if (listScrollController.hasClients) {
         listScrollController.animateTo(0,
             duration: Duration(milliseconds: 300), curve: Curves.easeOut);

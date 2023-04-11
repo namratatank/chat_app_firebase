@@ -38,7 +38,7 @@ class ChatProvider {
         .snapshots();
   }
 
-  void sendMessage(String content, int type, String groupChatId, String currentUserId, String peerId) {
+  void sendMessage(String content, int type, String groupChatId, String currentUserId, String peerId, bool isRead) {
     DocumentReference documentReference = firebaseFirestore
         .collection(FirestoreConstants.pathMessageCollection)
         .doc(groupChatId)
@@ -51,6 +51,7 @@ class ChatProvider {
       timestamp: DateTime.now().millisecondsSinceEpoch.toString(),
       content: content,
       type: type,
+      isRead: isRead,
     );
 
     FirebaseFirestore.instance.runTransaction((transaction) async {
