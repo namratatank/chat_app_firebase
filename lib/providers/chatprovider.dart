@@ -75,7 +75,7 @@ class ChatProvider {
       idTo: jsonEncode(peerId),
       timestamp: DateTime.now().millisecondsSinceEpoch.toString(),
       content: content,
-      type: type,
+      type: type, isRead: false,
     );
 
     FirebaseFirestore.instance.runTransaction((transaction) async {

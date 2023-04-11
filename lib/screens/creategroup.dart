@@ -342,7 +342,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         photoUrl: photoUrl,
         nickName: "",
         aboutMe: "",
-        phoneNumber: "",
+        phoneNumber: "", isRead: false,
       );
 
       settingProvider
