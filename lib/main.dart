@@ -1,4 +1,4 @@
-
+import 'package:camera/camera.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,6 +9,7 @@ import 'package:ichat_app/providers/authprovider.dart';
 import 'package:ichat_app/providers/chatprovider.dart';
 import 'package:ichat_app/providers/homeprovider.dart';
 import 'package:ichat_app/providers/settingprovider.dart';
+// import 'package:ichat_app/screens/camerascreen.dart' ;
 import 'package:ichat_app/screens/splashscreen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +20,7 @@ bool isWhite = false;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // cameras = await availableCameras();
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   runApp(MyApp(prefs: prefs));
